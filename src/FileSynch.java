@@ -40,11 +40,12 @@ public class FileSynch {
         File sourceDir = new File(sourcePath);
         File destDir = new File(destPath);
         if (!destDir.isDirectory()) {
-            System.out.println("Создаем каталог " + destDir.getPath());
+            System.out.print("Создаем каталог " + destDir.getPath());
             if (!destDir.mkdir()) {
-                System.out.println("Невозможно создать каталог-приемник " + destPath + ".");
+                System.out.println(" - Невозможно создать каталог-приемник " + destPath + ".");
                 return 0;
             }
+            System.out.println(" - OK");
         }
         File[] sourceFiles = sourceDir.listFiles();
         for (File file : sourceFiles) {
@@ -53,8 +54,9 @@ public class FileSynch {
                 File newFile = new File(newDestPath);
                 if (!newFile.exists() || file.length() != newFile.length())
                     try {
-                        System.out.println("Копируем файл из " + file.getPath() + " в " + newFile.getPath());
+                        System.out.print("Копируем файл из " + file.getPath() + " в " + newFile.getPath());
                         Files.copy(file.toPath(), newFile.toPath(), REPLACE_EXISTING);
+                        System.out.println(" - OK");
                         result++;
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -76,8 +78,9 @@ public class FileSynch {
             File checkFile = new File(checkFilePath);
             if (file.isFile() && !checkFile.exists()) {
                 try {
-                    System.out.println("Удаляем файл " + file.getPath());
+                    System.out.print("Удаляем файл " + file.getPath());
                     Files.delete(file.toPath());
+                    System.out.println(" - OK");
                     result++;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -85,8 +88,9 @@ public class FileSynch {
             } else if (file.isDirectory()  && !checkFile.exists()){
                 result+=removeFilesFromDir(checkFilePath, file.getPath());
                 try {
-                    System.out.println("Удаляем директорию " + file.getPath());
+                    System.out.print("Удаляем директорию " + file.getPath());
                     Files.delete(file.toPath());
+                    System.out.println(" - OK");
                     result++;
                 } catch (IOException e) {
                     e.printStackTrace();
